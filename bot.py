@@ -6,13 +6,15 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 app = Quart(__name__)
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 bot_app = ApplicationBuilder().token(TOKEN).build()
-bot_app.initialize()  # Ensure initialization is done here
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! I'm your new bot.")
 
-# Add the command handler to the bot application
-bot_app.add_handler(CommandHandler("start", start))
+# Function to set up handlers and initialize the bot
+async def setup_bot():
+    # Add the command handler to the bot application
+    bot_app.add_handler(CommandHandler("start", start))
+    await bot_app.initialize()  # Initialize here
 
 @app.route("/webhook", methods=["POST"])
 async def webhook():
@@ -30,4 +32,6 @@ async def home():
     return "Welcome to the Circle Bot!"
 
 if __name__ == "__main__":
+    # Setup the bot before running the app
+    app.loop.run_until_complete(setup_bot())
     app.run(host='0.0.0.0', port=5000)
