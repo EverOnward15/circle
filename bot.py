@@ -15,8 +15,12 @@ bot_app.add_handler(CommandHandler("start", start))
 @app.route(f"/{TOKEN}", methods=["POST"])
 async def webhook():
     update = Update.de_json(await request.get_json(force=True), bot_app.bot)
-    bot_app.process_update(update)
+    await bot_app.process_update(update)  # Await this line
     return "ok"
+
+@app.route("/")
+async def home():
+    return "Welcome to the Circle Bot!"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
