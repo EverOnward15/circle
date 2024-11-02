@@ -5,8 +5,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 app = Quart(__name__)
 TOKEN = os.getenv("TELEGRAM_TOKEN")
-bot_app = ApplicationBuilder().token(TOKEN).build()
-bot_app.initialize()  # Ensure initialization is done here
+bot_app = ApplicationBuilder().token(TOKEN).build()  # Initialization here
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! I'm your new bot.")
